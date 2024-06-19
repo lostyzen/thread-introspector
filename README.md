@@ -96,4 +96,4 @@ The application uses SLF4J with Logback for logging. The log configuration can b
 5. Create a new Pull Request.
 
 ## Licence
-This project is licensed under the MIT License.
+This project is licensed under the Apache 2.0 License.
