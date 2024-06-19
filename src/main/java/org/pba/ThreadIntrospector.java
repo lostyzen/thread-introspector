@@ -1,10 +1,15 @@
 package org.pba;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 
 public class ThreadIntrospector {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThreadIntrospector.class);
 
     public static void displayThreadInfo() {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
@@ -40,7 +45,7 @@ public class ThreadIntrospector {
             }
         }
 
-        System.out.printf("RUNNABLE: %d, BLOCKED: %d, WAITING: %d, TIMED_WAITING: %d, NEW: %d, TERMINATED: %d%n",
+        logger.info("RUNNABLE: {}, BLOCKED: {}, WAITING: {}, TIMED_WAITING: {}, NEW: {}, TERMINATED: {}",
                 runnableCount, blockedCount, waitingCount, timedWaitingCount, newCount, terminatedCount);
     }
 
@@ -51,13 +56,13 @@ public class ThreadIntrospector {
 
             if (threadInfo != null && threadInfo.getThreadState() == Thread.State.BLOCKED) {
                 // This is just a simulation of killing a thread. In reality, you can't directly kill a thread.
-                System.out.println("Killing thread " + threadId + " (simulation)");
+                logger.info("Killing thread {} (simulation)", threadId);
                 // Add your thread killing logic here if applicable
             } else {
-                System.out.println("Thread " + threadId + " is not in a BLOCKED state or doesn't exist.");
+                logger.warn("Thread {} is not in a BLOCKED state or doesn't exist.", threadId);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to kill thread {}", threadId, e);
         }
     }
 }
