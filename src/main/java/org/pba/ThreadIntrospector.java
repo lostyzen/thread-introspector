@@ -22,6 +22,7 @@ public class ThreadIntrospector {
         int newCount = 0;
         int terminatedCount = 0;
 
+        logger.info("Thread information summary:");
         for (ThreadInfo threadInfo : threadInfos) {
             switch (threadInfo.getThreadState()) {
                 case RUNNABLE:
@@ -43,6 +44,13 @@ public class ThreadIntrospector {
                     terminatedCount++;
                     break;
             }
+
+            // Log thread CPU time and user time
+            long threadId = threadInfo.getThreadId();
+            long cpuTime = threadMXBean.getThreadCpuTime(threadId);
+            long userTime = threadMXBean.getThreadUserTime(threadId);
+            logger.debug("Thread ID: {}, State: {}, CPU time: {} ns, User time: {} ns",
+                    threadId, threadInfo.getThreadState(), cpuTime, userTime);
         }
 
         logger.info("RUNNABLE: {}, BLOCKED: {}, WAITING: {}, TIMED_WAITING: {}, NEW: {}, TERMINATED: {}",
