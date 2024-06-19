@@ -41,3 +41,59 @@ To run the application, use the following command:
 
 ```sh
 java -jar target/thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar -p <pid> -i <interval-in-seconds> -l <logLevel>
+```
+
+## Command Line Options
+- '-p, --pid' : Process ID of the target JVM (required).
+- -p, --pid : Process ID of the target JVM (required).
+- -i, --interval : Interval in seconds to display thread info (required).
+- -l, --logLevel : Log level (optional, default: DEBUG). Possible values: DEBUG, INFO, WARN,
+
+### Example
+To monitor a JVM process with PID 1234, display thread information every 10 seconds, and set the log level to INFO:
+
+```sh
+java -jar target/thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar -p 1234 -i 10 -l INFO
+
+```
+
+## Logging
+The application uses SLF4J with Logback for logging. The log configuration can be modified in src/main/resources/logback.xml.
+
+### logback.xml
+```xml
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
+
+```
+## Development
+### Adding Unit Tests
+1. Ensure that the project has JUnit configured in pom.xml:
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+</dependency>
+```
+2. Create unit tests for new features, such as command line options and log level settings.
+
+### Contributing
+1. Fork the repository.
+2. Create a new branch (git checkout -b feature-branch).
+3. Commit your changes (git commit -am 'Add new feature').
+4. Push to the branch (git push origin feature-branch).
+5. Create a new Pull Request.
+
+## Licence
+This project is licensed under the MIT License.
