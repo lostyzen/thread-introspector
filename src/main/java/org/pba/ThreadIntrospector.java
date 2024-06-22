@@ -54,10 +54,11 @@ public class ThreadIntrospector {
 
             // Log thread CPU time and user time
             long threadId = threadInfo.getThreadId();
+            String threadName = threadInfo.getThreadName();
             long cpuTime = threadMXBean.getThreadCpuTime(threadId);
             long userTime = threadMXBean.getThreadUserTime(threadId);
-            logger.debug("Thread ID: {}, State: {}, CPU time: {} ns, User time: {} ns",
-                    threadId, threadInfo.getThreadState(), cpuTime, userTime);
+            logger.debug("Thread ID: {}, Name: {}, State: {}, CPU time: {} ns, User time: {} ns",
+                    threadId, threadName, threadInfo.getThreadState(), cpuTime, userTime);
         }
 
         logger.info("RUNNABLE: {}, BLOCKED: {}, WAITING: {}, TIMED_WAITING: {}, NEW: {}, TERMINATED: {}",
