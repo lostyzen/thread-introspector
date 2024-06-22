@@ -1,16 +1,37 @@
+# Ignore build target    directories
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+# Ignore all files in the .idea folder
+.idea/*
+
+# Except the following files, which should be included in the repository:
+# Project-level settings
+!.idea/misc.xml
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/workspace.xml
+!.idea/runConfigurations/
+
+# For Maven projects
+!.idea/artifacts/
+!.idea/compiler.xml
+!.idea/jarRepositories.xml
+
+# File-based project format
 *.iws
 *.iml
 *.ipr
+
+# IntelliJ specific cache files
+.idea/dataSources/
+.idea/dataSources.local/
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
 
 # Compiled class file
 *.class
