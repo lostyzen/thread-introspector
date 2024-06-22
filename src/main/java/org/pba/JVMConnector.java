@@ -4,13 +4,7 @@ import com.sun.tools.attach.VirtualMachine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.MBeanServerConnection;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JVMConnector {
 
@@ -29,7 +23,7 @@ public class JVMConnector {
         }
     }
 
-    public static void detachFromJVM (VirtualMachine vm) throws IOException {
+    public static void detachFromJVM(VirtualMachine vm) throws IOException {
         try {
             vm.detach();
         } catch (IOException e) {
