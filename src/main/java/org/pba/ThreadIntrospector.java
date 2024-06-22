@@ -3,6 +3,8 @@ package org.pba;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.MBeanServerConnection;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
@@ -11,8 +13,13 @@ public class ThreadIntrospector {
 
     private static final Logger logger = LoggerFactory.getLogger(ThreadIntrospector.class);
 
-    public static void displayThreadInfo() {
-        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+    public static void displayThreadInfo(MBeanServerConnection mbsc) throws IOException {
+        // Get the ThreadMXBean
+        logger.info("Retrieving ThreadMXBean...");
+        ThreadMXBean threadMXBean = ManagementFactory.newPlatformMXBeanProxy(
+                mbsc, ManagementFactory.THREAD_MXBEAN_NAME, ThreadMXBean.class);
+        logger.info("ThreadMXBean retrieved successfully.");
+
         ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false, false);
 
         int runnableCount = 0;

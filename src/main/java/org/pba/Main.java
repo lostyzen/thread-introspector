@@ -5,9 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+
+import com.sun.tools.attach.VirtualMachine;
+
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 public class Main {
 
@@ -49,14 +54,40 @@ public class Main {
         setLogLevel(logLevel);
 
         try {
-            JVMConnector.attachToJVM(pid);
+            VirtualMachine vm = JVMConnector.attachToJVM(pid);
+
+            // Check if the JMX agent is already loaded
+            logger.info("Checking if JMX agent is already loaded...");
+            String connectorAddress = vm.getAgentProperties().getProperty("com.sun.management.jmxremote.localConnectorAddress");
+
+            if (connectorAddress == null) {
+                logger.info("JMX agent not loaded. Enabling JMX...");
+
+                // Set the required properties to enable JMX
+                vm.startLocalManagementAgent();
+
+                // Retrieve the connector address again
+                connectorAddress = vm.getAgentProperties().getProperty("com.sun.management.jmxremote.localConnectorAddress");
+                if (connectorAddress == null) {
+                    throw new IllegalStateException("Failed to enable JMX and obtain connector address.");
+                }
+            }
+            logger.info("JMX connector address: {}", connectorAddress);
+
+            // Connect to the MBean server
+            System.out.println("Connecting to the MBean server...");
+            JMXServiceURL url = new JMXServiceURL(connectorAddress);
+            Map<String, Object> env = new HashMap<>();
+            JMXConnector connector = JMXConnectorFactory.connect(url, env);
+            MBeanServerConnection mbsc = connector.getMBeanServerConnection();
+            logger.info("Connected to the MBean server successfully.");
 
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     try {
-                        ThreadIntrospector.displayThreadInfo();
+                        ThreadIntrospector.displayThreadInfo(mbsc);
                     } catch (Exception e) {
                         logger.error("Failed to display thread info", e);
                     }
@@ -78,6 +109,8 @@ public class Main {
                     logger.error("Invalid thread ID", e);
                 }
             }
+
+            JVMConnector.detachFromJVM(vm);
         } catch (IOException e) {
             logger.error("Failed to attach to JVM", e);
         }
