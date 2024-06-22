@@ -32,7 +32,7 @@ Thread Introspector is a Java application that attaches to a running JVM process
 
 3. The FatJar will be generated in the `target` directory:
     ```sh
-    target/thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar
+    thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar
     ```
 
 ## Usage
@@ -40,11 +40,10 @@ Thread Introspector is a Java application that attaches to a running JVM process
 To run the application, use the following command:
 
 ```sh
-java -jar target/thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar -p <pid> -i <interval-in-seconds> -l <logLevel>
+java -jar thread-introspector-1.0-SNAPSHOT-jar-with-dependencies.jar -p <pid> -i <interval-in-seconds> -l <logLevel>
 ```
 
 ## Command Line Options
-- '-p, --pid' : Process ID of the target JVM (required).
 - -p, --pid : Process ID of the target JVM (required).
 - -i, --interval : Interval in seconds to display thread info (required).
 - -l, --logLevel : Log level (optional, default: DEBUG). Possible values: DEBUG, INFO, WARN,
